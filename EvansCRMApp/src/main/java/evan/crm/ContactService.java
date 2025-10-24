@@ -11,7 +11,7 @@ public class ContactService {
     private String serviceName = "contactService";
 
     public void processContact(Contact contact) {
-        log.info("Processing user: {}", contact);
+        log.info("Processing contact: {}", contact);
         log.debug("Service name: {}", getServiceName());
     }
 }
