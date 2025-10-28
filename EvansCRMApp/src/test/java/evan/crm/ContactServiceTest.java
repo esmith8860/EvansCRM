@@ -1,18 +1,27 @@
 package evan.crm;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 import nl.altindag.log.LogCaptor;
 
+@SpringBootTest
+@TestPropertySource(properties = "logging.level.evan.crm=TRACE")
 public class ContactServiceTest {
+    @Autowired
+    private ContactService contactService;
 
     @Test
     void testProcessContactLogsCorrectly() {
         LogCaptor logCaptor = LogCaptor.forClass(ContactService.class);
-        ContactService contactService = new ContactService();
+
         Contact contact = new Contact();
-        contact.setName("");
-        contact.setEmail("");
+        contact.setName("Name");
+        contact.setEmail("name@example.com");
         contactService.processContact(contact);
 
         assertTrue(logCaptor.getInfoLogs().stream()
