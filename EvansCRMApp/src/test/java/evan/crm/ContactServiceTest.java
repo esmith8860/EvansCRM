@@ -19,9 +19,7 @@ public class ContactServiceTest {
     void testProcessContactLogsCorrectly() {
         LogCaptor logCaptor = LogCaptor.forClass(ContactService.class);
 
-        Contact contact = new Contact();
-        contact.setName("Name");
-        contact.setEmail("name@example.com");
+        Contact contact = new Contact("name@example.com", "Name");
         contactService.processContact(contact);
 
         assertTrue(logCaptor.getInfoLogs().stream()

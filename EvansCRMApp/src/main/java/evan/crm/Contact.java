@@ -9,4 +9,9 @@ import lombok.Setter;
 public class Contact {
     private String name;
     private String email;
+
+    public Contact(String email, String name) {
+        this.name = name;
+        this.email = email;
+    }
 }
