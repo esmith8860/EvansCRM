@@ -15,6 +15,6 @@ public class APIController {
     @GetMapping("/api/evanscrm/contact")
     public String testContactAPI(String email, String name) {
         Contact contact = new Contact(email, name);
-        return "Contact created: " + contact.toString();
+        return "Contact created: " + contact;
     }
 }

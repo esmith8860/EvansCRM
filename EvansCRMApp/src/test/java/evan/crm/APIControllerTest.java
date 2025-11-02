@@ -25,10 +25,10 @@ public class APIControllerTest {
         RestAssured.config = RestAssured.config().sslConfig(SSLConfig.sslConfig().relaxedHTTPSValidation());
         given()
             .when()
-            .get("http://localhost:8080/api/evanscrm/contact?email=&name=TestName")
+            .get("http://localhost:8080/api/evanscrm/contact?email=testname@email.com&name=TestName")
             .then()
             .statusCode(200)
             .assertThat()
-            .body(org.hamcrest.Matchers.equalTo("Contact created: Contact(email=, name=TestName)"));
+            .body(org.hamcrest.Matchers.equalTo("Contact created: Contact(email=testname@email.com, name=TestName)"));
     }
 }
