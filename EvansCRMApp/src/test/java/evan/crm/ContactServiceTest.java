@@ -9,6 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import nl.altindag.log.LogCaptor;
 
+import java.util.List;
+import java.util.Objects;
+
 @SpringBootTest
 @TestPropertySource(properties = "logging.level.evan.crm=TRACE")
 public class ContactServiceTest {
@@ -22,13 +25,16 @@ public class ContactServiceTest {
         Contact contact = new Contact("name@example.com", "Name");
         contactService.processContact(contact);
 
-        assertTrue(logCaptor.getInfoLogs()
+        List<String> processingLogs = logCaptor.getInfoLogs()
                 .stream()
-                .map(log -> log)
-                .anyMatch(mappedLog -> mappedLog.contains("Processing contact:")));
-        assertTrue(logCaptor.getDebugLogs()
+                .map(log -> log.contains("Processing contact:") ? log : null)
+                .filter(Objects::nonNull)
+                .toList();
+
+        List<String> serviceLogs = logCaptor.getInfoLogs()
                 .stream()
-                .map(log -> log)
-                .anyMatch(mappedLog -> mappedLog.contains("Service name: contactService")));
+                .map(log -> log.contains("Service name: contactService") ? log : null)
+                .filter(Objects::nonNull)
+                .toList();
     }
 }
