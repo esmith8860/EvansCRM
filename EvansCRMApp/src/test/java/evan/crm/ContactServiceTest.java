@@ -22,9 +22,13 @@ public class ContactServiceTest {
         Contact contact = new Contact("name@example.com", "Name");
         contactService.processContact(contact);
 
-        assertTrue(logCaptor.getInfoLogs().stream()
-                .anyMatch(log -> log.contains("Processing contact:")));
-        assertTrue(logCaptor.getDebugLogs().stream()
-                .anyMatch(log -> log.contains("Service name: contactService")));
+        assertTrue(logCaptor.getInfoLogs()
+                .stream()
+                .map(log -> log)
+                .anyMatch(mappedLog -> mappedLog.contains("Processing contact:")));
+        assertTrue(logCaptor.getDebugLogs()
+                .stream()
+                .map(log -> log)
+                .anyMatch(mappedLog -> mappedLog.contains("Service name: contactService")));
     }
 }
