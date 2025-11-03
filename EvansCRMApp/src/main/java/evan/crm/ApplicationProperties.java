@@ -10,6 +10,6 @@ public class ApplicationProperties {
     private Integer maxContactNameCharacters;
     private Integer maxContactEmailCharacters;
 
-    @Value("${contact.service.name}")
+    //@Value("${contact.service.name:contactService}")
     private String contactServiceName;
 }
