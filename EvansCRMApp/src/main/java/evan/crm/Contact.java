@@ -7,11 +7,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Contact {
-    private String name;
     private String email;
+    private String name;
 
     public Contact(String email, String name) {
-        this.name = name;
         this.email = email;
+        this.name = name;
     }
 }
