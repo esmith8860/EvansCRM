@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class ContactService {
-    @Value("${contact.service.name:contactService}")
+    //@Value("${contact.service.name:contactService}")
     private String serviceName;
+
+    public ContactService(@Value("${contact.service.name:contactService}") String serviceName) {
+        this.serviceName = serviceName;
+    }
 
     public void processContact(Contact contact) {
         log.info("Processing contact: {}", contact);
