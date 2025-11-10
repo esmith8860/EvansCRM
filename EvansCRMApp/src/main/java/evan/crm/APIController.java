@@ -13,8 +13,8 @@ public class APIController {
 
     // Creates a contact
     @GetMapping("/api/evanscrm/contact")
-    public String testContactAPI(String email, String name) {
-        Contact contact = new Contact(email, name);
+    public String testContactAPI(String name, String email) {
+        Contact contact = new Contact(name, email);
         return "Contact created: " + contact;
     }
 }

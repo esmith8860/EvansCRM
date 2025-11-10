@@ -3,15 +3,22 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+//import java.util.UUID;
+
 @Data
 @Getter
 @Setter
 public class Contact {
-    private String email;
+    //private UUID uuid;
     private String name;
+    private String email;
 
-    public Contact(String email, String name) {
-        this.email = email;
+    public Contact() {}
+
+    //Add UUID as a parameter as well?
+    public Contact(String name, String email) {
+        //this.uuid = uuid;
         this.name = name;
+        this.email = email;
     }
 }
