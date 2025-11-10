@@ -5,34 +5,40 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Repository;
+import java.util.UUID;
 
 @Repository
 public class ContactRepository {
-    private final HashMap<String, String> contactsList;
+    private final HashMap<UUID, Contact> contactsList;
+    //private UUID uuid;
 
     @Getter
     private static final ContactRepository instance = new ContactRepository();
 
     private ContactRepository() {
         contactsList = new HashMap<>();
-        contactsList.put("JohnDoe@email.com", "John Doe");
-        contactsList.put("SallySmith@email.com", "Sally Smith");
+        UUID uuid = UUID.fromString("6fcdcba5-483e-4489-8dcb-a5483ec489bb");
+        Contact contact = new Contact("John Doe", "JohnDoe@email.com");
+        contactsList.put(uuid, contact);
     }
 
-    public void createContact(Contact contact) {
-        contactsList.put(contact.getEmail(), contact.getName());
+    public UUID createContact(Contact contact) {
+        UUID uuid = UUID.randomUUID();
+        contactsList.put(uuid, contact);
+        return uuid;
     }
 
-    public void deleteContact(String email) {
-        contactsList.remove(email);
+    public boolean deleteContact(UUID uuid) {
+        contactsList.remove(uuid);
+        return !isContactExists(uuid);
     }
 
-    public String findContactByEmail(String email) {
-        return contactsList.get(email);
+    public Contact findContactByUUID(UUID uuid) {
+        return contactsList.get(uuid);
     }
 
-    public boolean isContactExists(String email) {
-        return contactsList.containsKey(email);
+    public boolean isContactExists(UUID uuid) {
+        return contactsList.containsKey(uuid);
     }
 
     public boolean isEmpty() {

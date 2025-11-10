@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -20,18 +22,17 @@ public class ContactRepositoryTest {
 
     @Test
     void contactExists() {
-        Contact contact = new Contact("example@email.com", "Example Person");
-        contactRepository.createContact(contact);
-        assertTrue(contactRepository.isContactExists("example@email.com"));
-        assertEquals("Example Person", contactRepository.findContactByEmail("example@email.com"));
+        Contact contact = new Contact("Example Person", "example@email.com");
+        UUID uuid = contactRepository.createContact(contact);
+        assertTrue(contactRepository.isContactExists(uuid));
+        assertEquals("Example Person", contactRepository.findContactByUUID(uuid).getName());
     }
 
     @Test
     void contactDeletion() {
         Contact contact = new Contact("deletecontact@email.com", "Delete Me");
-        contactRepository.createContact(contact);
-        assertTrue(contactRepository.isContactExists("deletecontact@email.com"));
-        contactRepository.deleteContact("deletecontact@email.com");
-        assertFalse(contactRepository.isContactExists("deletecontact@email.com"));
+        UUID uuid = contactRepository.createContact(contact);
+        assertTrue(contactRepository.isContactExists(uuid));
+        assertTrue(contactRepository.deleteContact(uuid));
     }
 }
