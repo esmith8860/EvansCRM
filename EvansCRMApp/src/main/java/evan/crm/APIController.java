@@ -13,7 +13,7 @@ public class APIController {
     private ContactService contactService;
 
     @GetMapping("/contacts/{id}")
-    public Contact getContactById(UUID id) {
+    public Contact getContactById(@PathVariable UUID id) {
         return contactService.getContactById(id);
     }
 

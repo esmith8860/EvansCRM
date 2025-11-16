@@ -22,7 +22,7 @@ public class ContactService {
 
     public Contact createContact(Contact contact) {
         log.info("Processing contact: {}", contact);
-        log.debug("Service name: {}", serviceName);
+        //log.debug("Service name: {}", serviceName);
 
         UUID id = contactRepository.createContact(contact);
         log.info("Contact created with id: {}", id);
