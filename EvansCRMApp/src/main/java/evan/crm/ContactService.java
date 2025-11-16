@@ -44,12 +44,12 @@ public class ContactService {
         return contactRepository.getContactsList();
     }
 
-    public Contact updateContact(UUID id, String name, String email) {
-        Contact contact = contactRepository.findContactById(id);
-        if (contact != null) {
-            contact.setName(name);
-            contact.setEmail(email);
-            log.info("Contact updated: {}", contact);
+    public Contact updateContact(UUID id, Contact contact) {
+        Contact contactCheck = contactRepository.findContactById(id);
+        if (contactCheck != null) {
+            contactRepository.updateContact(contact);
+            Contact updatedContact = contactRepository.findContactById(id);
+            log.info("Contact updated: {}", updatedContact);
             return contact;
         } else {
             log.warn("Contact with id {} not found for update.", id);

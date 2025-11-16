@@ -23,8 +23,8 @@ public class APIController {
     }
 
     @PutMapping("/contacts/{id}")
-    public String updateContact(@PathVariable UUID id, String name, String email) {
-        return "Contact updated: " + contactService.updateContact(id, name, email);
+    public String updateContact(@PathVariable UUID id, @RequestBody Contact contact) {
+        return "Contact updated: " + contactService.updateContact(id, contact);
     }
 
     @DeleteMapping("/contacts/{id}")
@@ -34,8 +34,8 @@ public class APIController {
     }
 
     @PostMapping("/contacts/create")
-    public String createContact(String name, String email) {
-        Contact contact = contactService.createContact(new Contact(name, email));
-        return "Contact created: " + contact;
+    public String createContact(@RequestBody Contact contact) {
+        Contact updatedContact = contactService.createContact(contact);
+        return "Contact created: " + updatedContact;
     }
 }

@@ -26,13 +26,94 @@ public class APIControllerTest {
     @Test
     public void testCreateContact() {
         given()
-                .param("name", "TestName")
-                .param("email", "testname@email.com")
+                .contentType("application/json")
+                .body("{\"name\":\"TestName\",\"email\":\"testname@email.com\"}")
                 .when()
                 .post("/api/evanscrm/contacts/create")
                 .then()
                 .statusCode(200)
                 .assertThat()
                 .body(org.hamcrest.Matchers.containsString("Contact created"));
+    }
+
+    @Test
+    public void testGetContactById() {
+        String response = given()
+                .contentType("application/json")
+                .body("{\"name\":\"FetchMe\",\"email\":\"fetchme@email.com\"}")
+                .when()
+                .post("/api/evanscrm/contacts/create")
+                .then()
+                .statusCode(200)
+                .extract()
+                .asString();
+
+        String id = response.substring(
+                response.indexOf("id=") + 3,
+                response.indexOf(",", response.indexOf("id="))
+        );
+
+        given()
+                .contentType("application/json")
+                .body("{\"name\":\"FetchMe\",\"email\":\"fetchme@email.com\"}")
+                .when()
+                .delete("/api/evanscrm/contacts/" + id)
+                .then()
+                .statusCode(200)
+                .body(org.hamcrest.Matchers.containsString("Contact deleted"));
+    }
+
+    @Test
+    public void testUpdateContact() {
+        String response = given()
+                .contentType("application/json")
+                .body("{\"name\":\"UpdateMe\",\"email\":\"updateme@email.com\"}")
+                .when()
+                .post("/api/evanscrm/contacts/create")
+                .then()
+                .statusCode(200)
+                .extract()
+                .asString();
+
+        String id = response.substring(
+                response.indexOf("id=") + 3,
+                response.indexOf(",", response.indexOf("id="))
+        );
+
+        given()
+                .contentType("application/json")
+                .body("{\"name\":\"UpdatedName\",\"email\":\"updatedname@email.com\"}")
+                .when()
+                .put("/api/evanscrm/contacts/" + id)
+                .then()
+                .statusCode(200)
+                .body(org.hamcrest.Matchers.containsString("Contact updated"));
+    }
+
+    @Test
+    public void testDeleteContact() {
+        String response = given()
+                .contentType("application/json")
+                .body("{\"name\":\"DeleteMe\",\"email\":\"deleteme@email.com\"}")
+                .when()
+                .post("/api/evanscrm/contacts/create")
+                .then()
+                .statusCode(200)
+                .extract()
+                .asString();
+
+        String id = response.substring(
+                response.indexOf("id=") + 3,
+                response.indexOf(",", response.indexOf("id="))
+        );
+
+        given()
+                .contentType("application/json")
+                .body("{\"name\":\"DeleteMe\",\"email\":\"deleteme@email.com\"}")
+                .when()
+                .delete("/api/evanscrm/contacts/" + id)
+                .then()
+                .statusCode(200)
+                .body(org.hamcrest.Matchers.containsString("Contact deleted"));
     }
 }
