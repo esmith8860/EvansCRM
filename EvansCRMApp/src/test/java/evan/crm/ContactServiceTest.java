@@ -23,7 +23,7 @@ public class ContactServiceTest {
         LogCaptor logCaptor = LogCaptor.forClass(ContactService.class);
 
         Contact contact = new Contact("name@example.com", "Name");
-        contactService.processContact(contact);
+        contactService.createContact(contact);
 
         List<String> processingLogs = logCaptor.getInfoLogs()
                 .stream()

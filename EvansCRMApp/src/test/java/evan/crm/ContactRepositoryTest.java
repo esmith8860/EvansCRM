@@ -23,16 +23,16 @@ public class ContactRepositoryTest {
     @Test
     void contactExists() {
         Contact contact = new Contact("Example Person", "example@email.com");
-        UUID uuid = contactRepository.createContact(contact);
-        assertTrue(contactRepository.isContactExists(uuid));
-        assertEquals("Example Person", contactRepository.findContactByUUID(uuid).getName());
+        UUID id = contactRepository.createContact(contact);
+        assertTrue(contactRepository.isContactExists(id));
+        assertEquals("Example Person", contactRepository.findContactById(id).getName());
     }
 
     @Test
     void contactDeletion() {
         Contact contact = new Contact("deletecontact@email.com", "Delete Me");
-        UUID uuid = contactRepository.createContact(contact);
-        assertTrue(contactRepository.isContactExists(uuid));
-        assertTrue(contactRepository.deleteContact(uuid));
+        UUID id = contactRepository.createContact(contact);
+        assertTrue(contactRepository.isContactExists(id));
+        assertTrue(contactRepository.deleteContact(id));
     }
 }

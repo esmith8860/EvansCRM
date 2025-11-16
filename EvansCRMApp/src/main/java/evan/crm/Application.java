@@ -16,6 +16,6 @@ public class Application implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Contact contact = new Contact("Evan Smith", "evansemail@email.com");
-        contactService.processContact(contact);
+        contactService.createContact(contact);
     }
 }
