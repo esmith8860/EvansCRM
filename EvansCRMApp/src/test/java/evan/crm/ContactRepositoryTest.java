@@ -30,9 +30,19 @@ public class ContactRepositoryTest {
 
     @Test
     void contactDeletion() {
-        Contact contact = new Contact("deletecontact@email.com", "Delete Me");
+        Contact contact = new Contact("Delete Me", "deletecontact@email.com");
         UUID id = contactRepository.createContact(contact);
         assertTrue(contactRepository.isContactExists(id));
         assertTrue(contactRepository.deleteContact(id));
+    }
+
+    @Test
+    void contactUpdate() {
+        Contact contact = new Contact("Update Me", "updateme@email.com");
+        UUID id = contactRepository.createContact(contact);
+        assertTrue(contactRepository.isContactExists(id));
+        Contact updatedContact = new Contact("Updated Contact", "updated@email.com");
+        updatedContact.setId(id);  // Set the ID
+        assertTrue(contactRepository.updateContact(updatedContact));
     }
 }

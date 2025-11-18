@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -27,7 +29,8 @@ public class ContactRepository {
 
     public boolean deleteContact(UUID id) {
         contactsList.remove(id);
-        return !isContactExists(id);
+        Contact contact = contactsList.get(id);
+        return Optional.ofNullable(contact).isEmpty();
     }
 
     public Contact findContactById(UUID id) {
@@ -46,15 +49,13 @@ public class ContactRepository {
         return contactsList.toString();
     }
 
-    public boolean updateContact(Contact contactToUpdate) {
-        Contact contact = contactsList.get(contactToUpdate.getId());
-
-        if (contact == null) {
-            return false;
-        }
-
-        contact.setName(contact.getName());
-        contact.setEmail(contact.getEmail());
-        return true;
+    public boolean updateContact(Contact updatedContact) {
+        return Optional.ofNullable(contactsList.get(updatedContact.getId()))
+                .map(contact -> {
+                    contact.setName(updatedContact.getName());
+                    contact.setEmail(updatedContact.getEmail());
+                    return true;
+                })
+                .orElse(false);
     }
 }
