@@ -5,43 +5,57 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public class ContactRepository {
     private final HashMap<UUID, Contact> contactsList;
-    //private UUID uuid;
 
     @Getter
     private static final ContactRepository instance = new ContactRepository();
 
     private ContactRepository() {
         contactsList = new HashMap<>();
-        UUID uuid = UUID.fromString("6fcdcba5-483e-4489-8dcb-a5483ec489bb");
-        Contact contact = new Contact("John Doe", "JohnDoe@email.com");
-        contactsList.put(uuid, contact);
     }
 
     public UUID createContact(Contact contact) {
-        UUID uuid = UUID.randomUUID();
-        contactsList.put(uuid, contact);
-        return uuid;
+        UUID id = UUID.randomUUID();
+        contact.setId(id);
+        contactsList.put(id, contact);
+        return id;
     }
 
-    public boolean deleteContact(UUID uuid) {
-        contactsList.remove(uuid);
-        return !isContactExists(uuid);
+    public boolean deleteContact(UUID id) {
+        contactsList.remove(id);
+        Contact contact = contactsList.get(id);
+        return Optional.ofNullable(contact).isEmpty();
     }
 
-    public Contact findContactByUUID(UUID uuid) {
-        return contactsList.get(uuid);
+    public Contact findContactById(UUID id) {
+        return contactsList.get(id);
     }
 
-    public boolean isContactExists(UUID uuid) {
-        return contactsList.containsKey(uuid);
+    public boolean isContactExists(UUID id) {
+        return contactsList.containsKey(id);
     }
 
     public boolean isEmpty() {
         return contactsList.isEmpty();
+    }
+
+    public String getContactsList() {
+        return contactsList.toString();
+    }
+
+    public boolean updateContact(Contact updatedContact) {
+        return Optional.ofNullable(contactsList.get(updatedContact.getId()))
+                .map(contact -> {
+                    contact.setName(updatedContact.getName());
+                    contact.setEmail(updatedContact.getEmail());
+                    return true;
+                })
+                .orElse(false);
     }
 }

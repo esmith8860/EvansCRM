@@ -1,20 +1,28 @@
 package evan.crm;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import io.restassured.RestAssured;
 import io.restassured.config.SSLConfig;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-import static io.restassured.RestAssured.*;
+import java.util.UUID;
+
+import static io.restassured.RestAssured.given;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class APIControllerTest {
+public class APIControllerTestMockito {
 
     @LocalServerPort
     private int port;
+
+    //@MockBean
+    @MockitoBean
+    private ContactService contactService;
 
     @BeforeEach
     void setUp() {
@@ -25,6 +33,10 @@ public class APIControllerTest {
 
     @Test
     public void testCreateContact() {
+        Contact mockContact = new Contact("TestName", "testname@email.com");
+
+        when(contactService.createContact(any(Contact.class))).thenReturn(mockContact);
+
         given()
                 .contentType("application/json")
                 .body("{\"name\":\"TestName\",\"email\":\"testname@email.com\"}")
@@ -38,6 +50,13 @@ public class APIControllerTest {
 
     @Test
     public void testGetContactById() {
+        Contact mockContact = new Contact("FetchMe", "fetchme@email.com");
+        UUID id = UUID.randomUUID();
+        mockContact.setId(id);
+
+        when(contactService.createContact(any(Contact.class))).thenReturn(mockContact);
+        when(contactService.getContactById(id)).thenReturn(mockContact);
+
         String response = given()
                 .contentType("application/json")
                 .body("{\"name\":\"FetchMe\",\"email\":\"fetchme@email.com\"}")
@@ -47,11 +66,6 @@ public class APIControllerTest {
                 .statusCode(200)
                 .extract()
                 .asString();
-
-        String id = response.substring(
-                response.indexOf("id=") + 3,
-                response.indexOf(",", response.indexOf("id="))
-        );
 
         given()
                 .contentType("application/json")

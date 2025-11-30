@@ -1,20 +1,41 @@
 package evan.crm;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
+@RequestMapping("/api/evanscrm")
 public class APIController {
 
-    @GetMapping("/api/evanscrm")
-    public String crmAPI() {
-        return "API Test Successful";
+    @Autowired
+    private ContactService contactService;
+
+    @GetMapping("/contacts/{id}")
+    public Contact getContactById(@PathVariable UUID id) {
+        return contactService.getContactById(id);
     }
 
-    // Creates a contact
-    @GetMapping("/api/evanscrm/contact")
-    public String testContactAPI(String name, String email) {
-        Contact contact = new Contact(name, email);
-        return "Contact created: " + contact;
+    @GetMapping("/contacts")
+    public String getContacts() {
+        return "List of contacts: " + contactService.getContactsList();
+    }
+
+    @PutMapping("/contacts/{id}")
+    public String updateContact(@PathVariable UUID id, @RequestBody Contact contact) {
+        return "Contact updated: " + contactService.updateContact(id, contact);
+    }
+
+    @DeleteMapping("/contacts/{id}")
+    public String deleteContact(@PathVariable UUID id) {
+        contactService.deleteContact(id);
+        return "Contact deleted with id: " + id;
+    }
+
+    @PostMapping("/contacts/create")
+    public String createContact(@RequestBody Contact contact) {
+        Contact updatedContact = contactService.createContact(contact);
+        return "Contact created: " + updatedContact;
     }
 }
