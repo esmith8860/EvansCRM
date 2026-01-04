@@ -1,4 +1,6 @@
 package evan.crm;
+import evan.crm.dto.Contact;
+import evan.crm.services.ContactService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

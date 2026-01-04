@@ -1,5 +1,7 @@
-package evan.crm;
+package evan.crm.services;
 
+import evan.crm.dto.Contact;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +19,13 @@ import java.util.Objects;
 public class ContactServiceTest {
     @Autowired
     private ContactService contactService;
+
+    @Test
+    void testValidationWithBlankName() {
+        Contact contactWithBlankName = new Contact("", "john@example.com");
+        assertThrows(ConstraintViolationException.class, () -> contactService.createContact(contactWithBlankName));
+        //assertThrows(IllegalArgumentException.class, () -> contactService.createContact(contactWithBlankName));
+    }
 
     @Test
     void testProcessContactLogsCorrectly() {
