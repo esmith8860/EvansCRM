@@ -39,6 +39,8 @@ public class ContactService {
             throw new IllegalArgumentException("Contact cannot be null");
         }
 
+        validateContact(contact);
+
         final Contact savedContact = contactRepository.save(contact);
 
         log.info("Contact created with id: {}", savedContact.getId());
